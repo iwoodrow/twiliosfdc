@@ -26,7 +26,7 @@ public class TwilioServlet extends HttpServlet {
 //		out.flush();
 //		out.close();
     	TwiMLResponse twiml = new TwiMLResponse();
-        Message message = new Message("Hello, Mobile Monkey");
+        Message message = new Message("Hello, Donald");
         try {
             twiml.append(message);
         } catch (TwiMLException e) {
