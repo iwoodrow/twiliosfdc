@@ -5,6 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.ServletException;
 
 import java.io.IOException;
@@ -22,23 +23,35 @@ public class TwilioServlet extends HttpServlet {
     // You can also use doGet() or doPost()
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+    	//Gets session cookie
+    	HttpSession session = request.getSession(true);
+        Integer counter = (Integer)session.getAttribute("counter");
+        if (counter == null) {
+            counter = new Integer(0);
+        }
+        
+        /* Increment the counter by one, and store the count in the session. */
+        int count = counter.intValue();
+        count++;
+        session.setAttribute("counter", new Integer(count));
+    	
     	// Create a dict of people we know.
         HashMap<String, String> callers = new HashMap<String, String>();
         callers.put("+16175832821", "Donald");
         callers.put("+19702746400", "Isabelle");
  
         String fromNumber = request.getParameter("From");
-        String knownCaller = callers.get(fromNumber);
-        String message;
-        if (knownCaller == null) {
+        String toNumber = request.getParameter("To");
+        String fromName = callers.get(fromNumber);
+        if (fromName == null) {
             // Use a generic message
-            message = "Thanks for the message!";
-        } else {
-            // Use the caller's name
-            message = knownCaller + ", thanks for the message! You Rock!";
+            fromName = "You";
         }
+        String message = fromName + " has messaged " + toNumber + 
+                " " + String.valueOf(count) + " times.";
     	
-    	TwiMLResponse twiml = new TwiMLResponse();
+     // Create a TwiML response and add our message.
+        TwiMLResponse twiml = new TwiMLResponse();
         Message sms = new Message(message);
         try {
             twiml.append(sms);
