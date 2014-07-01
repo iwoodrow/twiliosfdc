@@ -24,8 +24,6 @@ public class TwilioServlet extends HttpServlet {
 
     	// Create a dict of people we know.
         HashMap<String, String> callers = new HashMap<String, String>();
-        callers.put("+14158675309", "Curious George");
-        callers.put("+14158675310", "Boots");
         callers.put("+16175832821", "Donald");
         callers.put("+19702746400", "Isabelle");
  
