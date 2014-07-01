@@ -37,9 +37,9 @@ public class TwilioServlet extends HttpServlet {
 
 		// Figure out where in the session they are
 		String newMessage = "";
-		String body = (String) request.getParameter("Body");
+		String body = (String)request.getParameter("Body");
 		if (body != null) {
-			if (count == 1) {
+			if (count >= 1) {
 				if (body.equals("y") || body.equals("yes")) {
 					newMessage = "Great Job!";
 					counter++;
