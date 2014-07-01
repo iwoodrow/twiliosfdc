@@ -36,10 +36,10 @@ public class TwilioServlet extends HttpServlet {
 		int count = counter.intValue();
 
 		// Figure out where in the session they are
-		String newMessage = "";
+		String newMessage = "nooooooooo";
 		String body = (String)request.getParameter("Body");
 		if (body != null) {
-			if (count >= 1) {
+			if (count >= 0) {
 				if (body.equals("y") || body.equals("yes")) {
 					newMessage = "Great Job!";
 					counter++;
@@ -69,13 +69,13 @@ public class TwilioServlet extends HttpServlet {
 		callers.put("+19702746400", "Isabelle");
 
 		String fromNumber = request.getParameter("From");
-		String toNumber = request.getParameter("To");
 		String fromName = callers.get(fromNumber);
 		if (fromName == null) {
 			// Use a generic message
 			fromName = "You";
 		}
 		/* For old example
+		 * String toNumber = request.getParameter("To");
 		 * String message = fromName + " has messaged " + toNumber + " "
 				+ String.valueOf(count) + " times.";*/
 
