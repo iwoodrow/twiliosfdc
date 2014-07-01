@@ -26,9 +26,15 @@ public class TwilioServlet extends HttpServlet {
     	//Gets session cookie
     	HttpSession session = request.getSession(true);
         Integer counter = (Integer)session.getAttribute("counter");
+        
         if (counter == null) {
             counter = new Integer(0);
         }
+        
+        String body = (String)request.getAttribute("body");
+        String m2;
+        if(body != null) m2 = body;
+        else m2 = ";(";
         
         /* Increment the counter by one, and store the count in the session. */
         int count = counter.intValue();
@@ -52,7 +58,7 @@ public class TwilioServlet extends HttpServlet {
     	
      // Create a TwiML response and add our message.
         TwiMLResponse twiml = new TwiMLResponse();
-        Message sms = new Message(message);
+        Message sms = new Message(m2);
         try {
             twiml.append(sms);
         } catch (TwiMLException e) {
