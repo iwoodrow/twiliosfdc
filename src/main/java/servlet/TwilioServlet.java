@@ -24,6 +24,24 @@ public class TwilioServlet extends HttpServlet {
 	public void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		// Create a dict of people we know, just for example. Should probably
+		// come from a database.
+		HashMap<String, String> callers = new HashMap<String, String>();
+		callers.put("+16175832821", "Donald");
+		callers.put("+19702746400", "Isabelle");
+
+		String fromNumber = request.getParameter("From");
+		String fromName = callers.get(fromNumber);
+		if (fromName == null) {
+			// Use a generic message
+			fromName = "";
+		}
+		/*
+		 * For old example String toNumber = request.getParameter("To"); String
+		 * message = fromName + " has messaged " + toNumber + " " +
+		 * String.valueOf(count) + " times.";
+		 */
+
 		// Gets session cookie
 		HttpSession session = request.getSession(true);
 		Integer counter = (Integer) session.getAttribute("counter");
@@ -37,47 +55,36 @@ public class TwilioServlet extends HttpServlet {
 
 		// Figure out where in the session they are
 		String newMessage = "nooooooooo";
-		String body = (String)request.getParameter("Body");
+		String body = (String) request.getParameter("Body");
 		if (body != null) {
 			if (count >= 0) {
+				body = body.toLowerCase();
 				if (body.equals("y") || body.equals("yes")) {
-					newMessage = "Great Job!";
+					newMessage = "Great Job " + fromName + "!";
 					counter++;
 				} else if (body.equals("n") || body.equals("no")) {
-					newMessage = "That's ok, tomorrow is a new day. Try to remember tomorrow!";
-					//Not positive I want to increment the counter here, but for example purposes I did.
+					newMessage = "That's ok " + fromName+ ", tomorrow is a new day. Try to remember tomorrow!";
+					// Not positive I want to increment the counter here, but
+					// for example purposes I did.
 					counter++;
-					//Here is where we need to mark something so that if they don't respond we can alert their doctor.
-					//maybe make a new field. Need to figure out how to make sessions last longer than four hours, perhaps a premiere account or something.
-				
+					// Here is where we need to mark something so that if they
+					// don't respond we can alert their doctor.
+					// maybe make a new field. Need to figure out how to make
+					// sessions last longer than four hours, perhaps a premiere
+					// account or something.
+
 				} else {
 					newMessage = "Please respond yes or no.";
 				}
-			}else if (count > 1){
-				//example if the convo wanted to go past a 1 response thing
+			} else if (count > 1) {
+				// example if the convo wanted to go past a 1 response thing
 			}
+		} else {
+			// figure out what to do if body is null.
 		}
-		else{
-			//figure out what to do if body is null.
-		}
-		//Set counter to be what we want it to be to track conversation progress
+		// Set counter to be what we want it to be to track conversation
+		// progress
 		session.setAttribute("counter", new Integer(count));
-
-		// Create a dict of people we know, just for example. Should probably come from a database.
-		HashMap<String, String> callers = new HashMap<String, String>();
-		callers.put("+16175832821", "Donald");
-		callers.put("+19702746400", "Isabelle");
-
-		String fromNumber = request.getParameter("From");
-		String fromName = callers.get(fromNumber);
-		if (fromName == null) {
-			// Use a generic message
-			fromName = "You";
-		}
-		/* For old example
-		 * String toNumber = request.getParameter("To");
-		 * String message = fromName + " has messaged " + toNumber + " "
-				+ String.valueOf(count) + " times.";*/
 
 		// Create a TwiML response and add our message.
 		TwiMLResponse twiml = new TwiMLResponse();
