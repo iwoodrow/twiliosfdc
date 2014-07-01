@@ -31,10 +31,10 @@ public class TwilioServlet extends HttpServlet {
             counter = new Integer(0);
         }
         
-        String body = (String)request.getAttribute("body");
+        String body = (String)request.getParameter("Body");
         String m2;
         if(body != null) m2 = body;
-        else m2 = ";(";
+        else m2 = ":(";
         
         /* Increment the counter by one, and store the count in the session. */
         int count = counter.intValue();
