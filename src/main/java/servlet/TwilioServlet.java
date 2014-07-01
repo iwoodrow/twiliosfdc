@@ -26,7 +26,7 @@ public class TwilioServlet extends HttpServlet {
         HashMap<String, String> callers = new HashMap<String, String>();
         callers.put("+14158675309", "Curious George");
         callers.put("+14158675310", "Boots");
-        callers.put("+14158675311", "Virgil");
+        callers.put("+16175832821", "Donald");
         callers.put("+19702746400", "Isabelle");
  
         String fromNumber = request.getParameter("From");
@@ -37,7 +37,7 @@ public class TwilioServlet extends HttpServlet {
             message = "Thanks for the message!";
         } else {
             // Use the caller's name
-            message = knownCaller + ", thanks for the message!";
+            message = knownCaller + ", thanks for the message! You Rock!";
         }
     	
     	TwiMLResponse twiml = new TwiMLResponse();
